@@ -177,6 +177,7 @@
   .btn-ghost{background:transparent; color:var(--azul); border:1.4px solid var(--azul);}
   .btn:disabled{opacity:.4; pointer-events:none;}
   .btn-row{display:flex; gap:10px; margin-top:20px;}
+  #screen-3 .btn-row{margin-top:32px;}
 
   /* ---------- Selección de layout ---------- */
   .layout-options{display:flex; gap:14px; margin-bottom:0;}
@@ -280,27 +281,30 @@
   .shutter-btn:active{transform:scale(.94);}
   .cam-hint{text-align:center; font-size:15px; color:var(--azul-soft); margin-top:14px;}
   #screen-2 .sub, #screen-2 .cam-hint, #screen-2 .eyebrow{ color:var(--oscuro); }
+  #screen-3 .sub{ color:var(--oscuro); }
   #screen-4 .sub, #screen-4 .eyebrow{ color:var(--oscuro); }
 
   /* ---------- Composición / stickers ---------- */
   .compose-stage{
     position:relative;
     width:70%;
-    max-width:200px;
+    max-width:220px;
     margin-left:auto;
     margin-right:auto;
     border-radius:var(--radius);
     overflow:hidden;
-    margin-bottom:18px;
+    margin-bottom:34px;
     border:1.5px solid var(--azul);
   }
   #composeCanvas{width:100%; display:block; touch-action:none;}
   .sticker-picker{
     display:flex;
+    align-items:center;
     gap:8px;
     margin-bottom:6px;
     overflow-x:auto;
-    padding:2px 2px 10px;
+    overflow-y:visible;
+    padding:14px 2px 18px;
     scroll-snap-type:x proximity;
     -webkit-overflow-scrolling:touch;
     touch-action:pan-x;
@@ -322,10 +326,10 @@
   }
   .sticker-chip.selected{box-shadow:0 0 0 1.5px var(--azul), 0 3px 10px rgba(30,30,30,.08);}
   .sticker-chip .order-badge{
-    position:absolute; top:-6px; right:-6px;
-    width:18px; height:18px; border-radius:50%;
+    position:absolute; top:-8px; right:-8px;
+    width:20px; height:20px; border-radius:50%;
     background:var(--oscuro); color:#fff;
-    font-size:10px; display:flex; align-items:center; justify-content:center;
+    font-size:11px; display:flex; align-items:center; justify-content:center;
     font-family:var(--font-2);
   }
   .sticker-note{font-size:12px; color:var(--azul-soft); text-align:center; margin-bottom:0;}
