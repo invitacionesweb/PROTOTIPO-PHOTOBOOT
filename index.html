@@ -1010,8 +1010,6 @@ function attachCanvasDragHandlers(){
 function goToAlbumPrompt(){
   setProgress(4);
   showScreen('screen-album');
-  const dataUrl = composeCanvas.toDataURL('image/png', 1.0);
-  document.getElementById('albumPreviewImg').src = dataUrl;
   document.getElementById('albumStatus').textContent = '';
 }
 
@@ -1020,13 +1018,33 @@ function skipAlbumShare(){
 }
 
 async function confirmAlbumShare(){
-  // TODO Ara: acá va la conexión real a tu carpeta de Drive / Apps Script
-  // cuando quieras activarla. Por ahora solo confirma en pantalla y sigue.
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxpYGEMsivmoSCNHIKapW0P-4AO2HnyNtktA7TBFS0Q5bii-WPoD4P1w30fL-Uxg6TgKA/exec';
   const statusEl = document.getElementById('albumStatus');
   statusEl.textContent = 'Compartiendo con los novios...';
-  await new Promise(r => setTimeout(r, 600));
-  statusEl.textContent = '¡Gracias! Tu foto se compartió con Lucre & Pipe 🤍';
-  await new Promise(r => setTimeout(r, 700));
+
+  try {
+    const dataUrl = composeCanvas.toDataURL('image/jpeg', 0.82);
+
+    await new Promise((resolve) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', SCRIPT_URL, true);
+      xhr.onloadend = resolve;   // resolvemos siempre, éxito o no
+      xhr.onerror   = resolve;
+      xhr.send(JSON.stringify({
+        image: dataUrl,
+        coupleName: CONFIG.coupleNames,
+        date: CONFIG.weddingDate
+      }));
+    });
+
+    statusEl.textContent = '¡Gracias! Tu foto se compartió con ' + CONFIG.coupleNames + ' 🤍';
+
+  } catch(err) {
+    console.error('Album share error:', err);
+    statusEl.textContent = 'No se pudo compartir. Podés seguir igual 💛';
+  }
+
+  await new Promise(r => setTimeout(r, 1200));
   goToFinal();
 }
 
