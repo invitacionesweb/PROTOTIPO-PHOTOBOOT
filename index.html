@@ -346,22 +346,6 @@
     margin-bottom:20px;
   }
   #finalImg{width:100%; display:block;}
-  .album-preview{
-    width:52%;
-    max-width:200px;
-    margin:6px auto 18px;
-    border-radius:var(--radius);
-    overflow:hidden;
-    border:1.5px solid var(--azul);
-  }
-  #albumPreviewImg{width:100%; display:block;}
-  .album-status{
-    text-align:center;
-    font-size:14px;
-    color:var(--azul-soft);
-    min-height:1px;
-    margin-bottom:6px;
-  }
   .share-row{display:flex; gap:10px;}
   .share-row .btn{flex:1;}
   .download-hint{
@@ -410,7 +394,7 @@
 
   <div class="top-header">
     <span class="brand">Photobooth by Si Quiero</span>
-    <span class="step" id="stepLabel">Paso 1 de 5</span>
+    <span class="step" id="stepLabel">Paso 1 de 4</span>
   </div>
 
   <!-- PASO 1: Bienvenida + elegir layout -->
@@ -472,28 +456,11 @@
 
     <div class="sticker-picker" id="stickerPicker"></div>
     <div class="btn-row">
-      <button class="btn btn-primary" style="flex:1" onclick="goToAlbumPrompt()">Listo, continuar</button>
+      <button class="btn btn-primary" style="flex:1" onclick="goToFinal()">Listo, continuar</button>
     </div>
   </section>
 
-  <!-- PASO 4: ¿Compartir al álbum de los novios? -->
-  <section class="screen" id="screen-album">
-    <h2>¿La compartimos<br>con los novios?</h2>
-    <p class="sub">Si decís que sí, tu foto se suma a un álbum en Drive donde van a quedar las fotos de todos los invitados, como recuerdo para Lucre &amp; Pipe.</p>
-
-    <div class="album-preview">
-      <img id="albumPreviewImg" alt="Tu foto">
-    </div>
-
-    <div class="album-status" id="albumStatus"></div>
-
-    <div class="btn-row">
-      <button class="btn btn-ghost" style="flex:1" onclick="skipAlbumShare()">No, gracias</button>
-      <button class="btn btn-primary" style="flex:1" onclick="confirmAlbumShare()">Sí, compartir</button>
-    </div>
-  </section>
-
-  <!-- PASO 5: Final -->
+  <!-- PASO 4: Final -->
   <section class="screen" id="screen-4">
     <h2>¡Quedó hermosa!</h2>
     <p class="sub">Descargala o compartila directo en tus historias.</p>
@@ -597,7 +564,7 @@ function drawCornerImage(cache, url, corner, targetWidth){
 let draggingIndex = null;
 
 function setProgress(step){
-  document.getElementById('stepLabel').textContent = `Paso ${step} de 5`;
+  document.getElementById('stepLabel').textContent = `Paso ${step} de 4`;
 }
 
 function showScreen(id){
@@ -947,33 +914,9 @@ function attachCanvasDragHandlers(){
   window.addEventListener('touchend', end);
 }
 
-/* ---------------- Álbum de los novios (Sí/No) ---------------- */
-function goToAlbumPrompt(){
-  setProgress(4);
-  showScreen('screen-album');
-  const dataUrl = composeCanvas.toDataURL('image/png', 1.0);
-  document.getElementById('albumPreviewImg').src = dataUrl;
-  document.getElementById('albumStatus').textContent = '';
-}
-
-function skipAlbumShare(){
-  goToFinal();
-}
-
-async function confirmAlbumShare(){
-  // TODO Ara: acá va la conexión real a tu carpeta de Drive / Apps Script
-  // cuando quieras activarla. Por ahora solo confirma en pantalla y sigue.
-  const statusEl = document.getElementById('albumStatus');
-  statusEl.textContent = 'Compartiendo con los novios...';
-  await new Promise(r => setTimeout(r, 600));
-  statusEl.textContent = '¡Gracias! Tu foto se compartió con Lucre & Pipe 🤍';
-  await new Promise(r => setTimeout(r, 700));
-  goToFinal();
-}
-
 /* ---------------- Final ---------------- */
 function goToFinal(){
-  setProgress(5);
+  setProgress(4);
   showScreen('screen-4');
   const dataUrl = composeCanvas.toDataURL('image/png', 1.0);
   document.getElementById('finalImg').src = dataUrl;
