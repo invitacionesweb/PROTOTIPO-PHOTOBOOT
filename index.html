@@ -852,11 +852,20 @@ function drawHeader(){
     }
     if(photoImgCache['__overlay__'] !== 'loading'){
       const img = photoImgCache['__overlay__'];
-      // Limitamos la altura del header a 240px para que no pise las fotos
-      const maxH = 240;
-      const h = Math.min(maxH, CW * 0.55 * (img.height / img.width));
-      const w = h * (img.width / img.height);
-      cctx.drawImage(img, (CW - w) / 2, 40, w, h);
+      const ratio = img.height / img.width;
+      let w, h, y;
+      if(layout === 'grid'){
+        w = CW * 0.82;
+        h = w * ratio;
+        if(h > 300){ h = 300; w = h / ratio; }
+        y = (340 - h) / 2;
+      } else {
+        w = CW * 0.72;
+        h = w * ratio;
+        if(h > 260){ h = 260; w = h / ratio; }
+        y = (340 - h) / 2;
+      }
+      cctx.drawImage(img, (CW - w) / 2, y, w, h);
       return;
     }
   }
