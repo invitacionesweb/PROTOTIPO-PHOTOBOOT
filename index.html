@@ -859,7 +859,13 @@ function drawHeader(){
         h = w * ratio;
         if(h > 390){ h = 390; w = h / ratio; }
         // posicionada a 80px arriba del topOffset (340)
-        y = 340 - h - 80;
+        // Calculamos dónde empieza realmente la cuadrícula (igual que en drawComposite)
+        const _pad = 34, _topOffset = 340, _bottomMargin = 130;
+        const _areaH = CH - _topOffset - _bottomMargin;
+        const _size = Math.min((CW - _pad*3)/2, (_areaH - _pad)/2);
+        const _totalH = _size*2 + _pad;
+        const _gridStartY = _topOffset + (_areaH - _totalH)/2;
+        y = _gridStartY - h - 30;  // 30px sobre la cuadrícula real
         if(y < 10) y = 10;       // nunca sale del canvas
       } else {
         w = CW * 0.72;
