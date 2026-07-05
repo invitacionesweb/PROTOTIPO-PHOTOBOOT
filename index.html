@@ -248,6 +248,10 @@
   .flash{
     position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none;
   }
+  .screen-flash{
+    position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none;
+    z-index:20;
+  }
   .flip-cam-btn{
     position:absolute;
     top:12px; right:12px;
@@ -353,7 +357,7 @@
     min-height:1px;
   }
   .redo-link{
-    text-align:center; margin-top:16px; font-size:12.5px;
+    text-align:center; margin-top:16px; font-size:17px;
     color:var(--azul-soft); text-decoration:underline; cursor:pointer;
   }
 
@@ -384,6 +388,7 @@
 <body>
 <div id="app">
 
+  <div class="screen-flash" id="screenFlash"></div>
   <img class="corner-decor angelito" id="angelitoImg" alt="" aria-hidden="true">
   <img class="corner-decor candelabro" id="candelabroImg" alt="" aria-hidden="true">
 
@@ -442,11 +447,12 @@
   <!-- PASO 3: Stickers -->
   <section class="screen" id="screen-3">
     <h2>Sumale tu toque</h2>
-    <p class="sub">Elegí hasta 3 stickers. Después arrastralos sobre la foto para acomodarlos.</p>
 
     <div class="compose-stage">
       <canvas id="composeCanvas"></canvas>
     </div>
+
+    <p class="sub">Elegí hasta 3 stickers. Después arrastralos sobre la foto para acomodarlos.</p>
 
     <div class="sticker-picker" id="stickerPicker"></div>
     <div class="btn-row">
@@ -661,6 +667,16 @@ function capturePhoto(){
     flash.style.transition = 'opacity .35s ease';
     flash.style.opacity = 0;
   });
+
+  const screenFlash = document.getElementById('screenFlash');
+  screenFlash.style.transition = 'none';
+  screenFlash.style.opacity = 1;
+  requestAnimationFrame(()=>{
+    screenFlash.style.transition = 'opacity .45s ease';
+    screenFlash.style.opacity = 0;
+  });
+
+  if(navigator.vibrate) navigator.vibrate(40);
 
   renderShotsProgress();
 
