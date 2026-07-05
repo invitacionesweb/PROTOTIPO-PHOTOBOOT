@@ -74,6 +74,7 @@
     overflow:hidden;
   }
   .screen.active{display:flex;}
+  #screen-3.active{overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch;}
   @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
 
   .eyebrow{
@@ -254,11 +255,15 @@
   }
   .shutter-btn:active{transform:scale(.94);}
   .cam-hint{text-align:center; font-size:15px; color:var(--azul-soft); margin-top:14px;}
+  #screen-2 .sub, #screen-2 .cam-hint, #screen-2 .eyebrow{ color:var(--oscuro); }
+  #screen-4 .sub, #screen-4 .eyebrow{ color:var(--oscuro); }
 
   /* ---------- Composición / stickers ---------- */
   .compose-stage{
     position:relative;
-    width:100%;
+    width:84%;
+    margin-left:auto;
+    margin-right:auto;
     border-radius:var(--radius);
     overflow:hidden;
     margin-bottom:18px;
@@ -308,6 +313,14 @@
   #finalImg{width:100%; display:block;}
   .share-row{display:flex; gap:10px;}
   .share-row .btn{flex:1;}
+  .download-hint{
+    font-size:13px;
+    color:var(--azul-soft);
+    text-align:center;
+    margin-top:12px;
+    line-height:1.4;
+    min-height:1px;
+  }
   .redo-link{
     text-align:center; margin-top:16px; font-size:12.5px;
     color:var(--azul-soft); text-decoration:underline; cursor:pointer;
@@ -422,6 +435,7 @@
       <button class="btn btn-ghost" onclick="downloadImage()">Descargar</button>
       <button class="btn btn-primary" onclick="shareImage()">Compartir</button>
     </div>
+    <div class="download-hint" id="downloadHint"></div>
     <div class="redo-link" onclick="restart()">Sacar otra foto</div>
   </section>
 
@@ -811,8 +825,20 @@ function goToFinal(){
   document.getElementById('finalImg').src = dataUrl;
 }
 
+function downloadLocationHint(){
+  const ua = navigator.userAgent;
+  if(/iPhone|iPad|iPod/.test(ua)){
+    return 'Se guardó en la app Archivos (carpeta Descargas). Para pasarla a Fotos, abrila ahí y elegí compartir → Guardar imagen.';
+  }
+  if(/Android/.test(ua)){
+    return 'Se guardó en la carpeta Descargas del celular. Si no aparece en tu galería, buscala en la app Archivos.';
+  }
+  return 'Se descargó a tu carpeta de Descargas.';
+}
+
 async function downloadImage(){
   const dataUrl = document.getElementById('finalImg').src;
+  const hintEl = document.getElementById('downloadHint');
   try{
     const res = await fetch(dataUrl);
     const blob = await res.blob();
@@ -824,11 +850,13 @@ async function downloadImage(){
     link.click();
     document.body.removeChild(link);
     setTimeout(()=> URL.revokeObjectURL(objectUrl), 4000);
+    if(hintEl) hintEl.textContent = downloadLocationHint();
   }catch(err){
     // Fallback: abrir la imagen en una pestaña para guardarla manualmente
     // (algunos navegadores de iPhone no permiten forzar la descarga;
     // ahí el usuario mantiene presionada la imagen y elige "Agregar a Fotos").
     window.open(dataUrl, '_blank');
+    if(hintEl) hintEl.textContent = 'Se abrió en una pestaña nueva: mantené presionada la imagen y elegí "Agregar a Fotos".';
   }
 }
 
