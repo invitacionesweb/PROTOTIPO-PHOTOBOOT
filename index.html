@@ -285,7 +285,7 @@
   /* ---------- Composición / stickers ---------- */
   .compose-stage{
     position:relative;
-    width:90%;
+    width:70%;
     margin-left:auto;
     margin-right:auto;
     border-radius:var(--radius);
@@ -459,7 +459,7 @@
     </div>
 
     <div class="share-row">
-      <button class="btn btn-ghost" onclick="downloadImage()">Descargar</button>
+      <button class="btn btn-ghost" onclick="downloadImage()">Guardar</button>
       <button class="btn btn-primary" onclick="shareImage()">Compartir</button>
     </div>
     <div class="download-hint" id="downloadHint"></div>
@@ -915,9 +915,22 @@ function downloadLocationHint(){
 async function downloadImage(){
   const dataUrl = document.getElementById('finalImg').src;
   const hintEl = document.getElementById('downloadHint');
+
+  // En celular, la única forma real de guardar directo en Fotos es a través
+  // del share nativo del sistema operativo (el navegador no puede escribir
+  // ahí por su cuenta). Por eso "Guardar" usa el mismo mecanismo que
+  // "Compartir": abre el cuadro nativo y ahí se elige "Guardar imagen".
   try{
     const res = await fetch(dataUrl);
     const blob = await res.blob();
+    const file = new File([blob], 'photobooth-boda.png', { type: 'image/png' });
+    if(navigator.canShare && navigator.canShare({ files:[file] })){
+      await navigator.share({ files:[file], title:'Nuestra boda' });
+      if(hintEl) hintEl.textContent = '';
+      return;
+    }
+    // Sin soporte de share con archivos (típicamente en desktop):
+    // descarga normal a la carpeta de Descargas.
     const objectUrl = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.download = 'photobooth-boda.png';
@@ -928,9 +941,11 @@ async function downloadImage(){
     setTimeout(()=> URL.revokeObjectURL(objectUrl), 4000);
     if(hintEl) hintEl.textContent = downloadLocationHint();
   }catch(err){
-    // Fallback: abrir la imagen en una pestaña para guardarla manualmente
-    // (algunos navegadores de iPhone no permiten forzar la descarga;
-    // ahí el usuario mantiene presionada la imagen y elige "Agregar a Fotos").
+    if(err && err.name === 'AbortError'){
+      // el usuario cerró el cuadro de compartir sin elegir nada: no mostramos error
+      return;
+    }
+    // Último recurso: abrir la imagen para guardarla manualmente
     window.open(dataUrl, '_blank');
     if(hintEl) hintEl.textContent = 'Se abrió en una pestaña nueva: mantené presionada la imagen y elegí "Agregar a Fotos".';
   }
