@@ -40,18 +40,21 @@
     --radius:18px;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html,body{margin:0;padding:0;background:var(--oscuro);}
+  html,body{margin:0;padding:0;background:var(--oscuro); height:100%; overflow:hidden;}
   body{
     font-family:var(--font-2);
     color:var(--ink);
-    min-height:100vh;
+    height:100vh;
+    height:100dvh;
     display:flex;
     justify-content:center;
+    overflow:hidden;
   }
   #app{
     width:100%;
     max-width:460px;
-    min-height:100vh;
+    height:100vh;
+    height:100dvh;
     background:var(--cream);
     background-image:var(--bg-image, none);
     background-size:cover;
@@ -65,32 +68,34 @@
     display:none;
     flex-direction:column;
     flex:1;
-    padding:28px 22px 30px;
+    min-height:0;
+    padding:20px 22px 22px;
     animation:fadeIn .4s ease;
+    overflow:hidden;
   }
   .screen.active{display:flex;}
   @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
 
   .eyebrow{
-    font-size:11px;
+    font-size:14px;
     letter-spacing:.22em;
     text-transform:uppercase;
     color:var(--azul-soft);
-    margin-bottom:6px;
+    margin-bottom:8px;
     font-weight:500;
   }
   h1,h2{
     font-family:var(--font-1);
     font-weight:600;
     color:var(--oscuro);
-    margin:0 0 6px;
+    margin:0 0 8px;
     line-height:1.05;
   }
-  h1{font-size:34px;}
-  h2{font-size:26px;}
+  h1{font-size:42px;}
+  h2{font-size:36px;}
   p.sub{
     color:var(--azul-soft);
-    font-size:14.5px;
+    font-size:17px;
     line-height:1.5;
     margin:0 0 22px;
   }
@@ -98,44 +103,44 @@
   /* ---------- Header nombres / fecha (paso 1) ---------- */
   .invite-header{
     text-align:center;
-    margin:18px 0 30px;
+    margin:14px 0 22px;
   }
   .invite-header .kicker{
     font-family:var(--font-2);
-    font-size:11px;
+    font-size:15px;
     letter-spacing:.2em;
     text-transform:uppercase;
     color:var(--oscuro);
-    margin-bottom:8px;
+    margin-bottom:10px;
   }
   .invite-header .names{
     font-family:var(--font-1);
-    font-size:44px;
+    font-size:56px;
     line-height:1;
     color:var(--oscuro);
-    margin-bottom:8px;
+    margin-bottom:10px;
   }
   .invite-header .date{
     font-family:var(--font-2);
-    font-size:12px;
+    font-size:16px;
     letter-spacing:.14em;
     color:var(--oscuro);
   }
   .invite-tagline{
     text-align:center;
-    margin:0 0 4px;
+    margin:0 0 6px;
   }
   .invite-tagline .script{
     display:block;
     font-family:var(--font-1);
-    font-size:30px;
+    font-size:38px;
     line-height:1.15;
     color:var(--azul);
   }
   .invite-tagline .label{
     display:block;
     font-family:var(--font-2);
-    font-size:11px;
+    font-size:15px;
     letter-spacing:.16em;
     text-transform:uppercase;
     color:var(--oscuro);
@@ -146,26 +151,27 @@
   .btn{
     border:none;
     border-radius:999px;
-    padding:15px 20px;
-    font-family:var(--font-2);
-    font-size:14.5px;
-    letter-spacing:.03em;
+    padding:14px 20px;
+    font-family:var(--font-1);
+    font-style:italic;
+    font-size:24px;
+    letter-spacing:.01em;
     font-weight:500;
     cursor:pointer;
     text-align:center;
     transition:transform .15s ease, opacity .15s ease;
   }
   .btn:active{transform:scale(.97);}
-  .btn-primary{background:var(--oscuro); color:var(--cream);}
-  .btn-ghost{background:transparent; color:var(--oscuro); border:1px solid var(--azul-soft);}
+  .btn-primary{background:var(--azul); color:#fff;}
+  .btn-ghost{background:transparent; color:var(--azul); border:1.4px solid var(--azul);}
   .btn:disabled{opacity:.4; pointer-events:none;}
-  .btn-row{display:flex; gap:10px; margin-top:auto; padding-top:18px;}
+  .btn-row{display:flex; gap:10px; margin-top:20px;}
 
   /* ---------- Selección de layout ---------- */
-  .layout-options{display:flex; gap:14px; margin-bottom:22px;}
+  .layout-options{display:flex; gap:14px; margin-bottom:0;}
   .layout-card{
     flex:1;
-    border:none;
+    border:1.4px solid transparent;
     border-radius:20px;
     padding:22px 10px;
     display:flex;
@@ -175,24 +181,31 @@
     gap:14px;
     background:#fff;
     cursor:pointer;
-    box-shadow:0 4px 14px rgba(0,0,0,.05);
-    transition:box-shadow .15s ease, transform .15s ease;
+    transition:border-color .15s ease;
   }
-  .layout-card.selected{box-shadow:0 4px 18px rgba(161,177,186,.55);}
+  .layout-card.selected{border-color:var(--azul);}
   .layout-preview{
-    width:34px; height:46px;
-    display:grid;
-    gap:3px;
+    width:40px;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
     flex-shrink:0;
   }
-  .layout-preview.strip{grid-template-rows:repeat(3,1fr);}
-  .layout-preview.grid{grid-template-columns:repeat(2,1fr); grid-template-rows:repeat(2,1fr); width:46px; height:46px;}
+  .layout-preview.strip div{width:100%; aspect-ratio:1;}
+  .layout-preview.grid{
+    width:40px; height:40px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    grid-template-rows:repeat(2,1fr);
+    gap:4px;
+  }
+  .layout-preview.grid div{aspect-ratio:1;}
   .layout-preview div{background:var(--azul-soft); border-radius:3px;}
   .layout-card .meta{text-align:center;}
   .layout-card .meta strong{
     display:block;
     font-family:var(--font-2);
-    font-size:10px;
+    font-size:14px;
     font-weight:500;
     letter-spacing:.1em;
     text-transform:uppercase;
@@ -226,19 +239,21 @@
   .shots-progress{
     display:flex; gap:8px; justify-content:center; margin-bottom:18px;
   }
-  .dot{width:9px; height:9px; border-radius:50%; background:var(--cream-dark); border:1px solid var(--azul);}
+  .dot{width:11px; height:11px; border-radius:50%; background:#fff; border:1.4px solid var(--azul);}
   .dot.filled{background:var(--azul);}
   .shutter-btn{
-    width:74px; height:74px;
+    width:78px; height:78px;
     border-radius:50%;
-    background:var(--oscuro);
-    border:4px solid var(--cream-dark);
-    box-shadow:0 0 0 2px var(--oscuro);
+    background:var(--azul);
+    background-clip:padding-box;
+    border:2px solid transparent;
+    box-shadow:0 0 0 1px var(--azul);
     margin:0 auto;
     cursor:pointer;
+    flex-shrink:0;
   }
   .shutter-btn:active{transform:scale(.94);}
-  .cam-hint{text-align:center; font-size:12.5px; color:var(--azul-soft); margin-top:12px;}
+  .cam-hint{text-align:center; font-size:15px; color:var(--azul-soft); margin-top:14px;}
 
   /* ---------- Composición / stickers ---------- */
   .compose-stage{
@@ -467,6 +482,7 @@ let shotsNeeded = 3;
 let shotsTaken = [];
 let stream = null;
 let selectedStickers = []; // {emoji, x, y} in canvas-space fractions
+const bgImgCache = { status: 'idle', img: null };
 let draggingIndex = null;
 
 function setProgress(step){
@@ -570,7 +586,7 @@ function capturePhoto(){
 /* ---------------- Composición ---------------- */
 const composeCanvas = document.getElementById('composeCanvas');
 const cctx = composeCanvas.getContext('2d');
-const CW = 900, CH = 1300;
+const CW = 1080, CH = 1920; // tamaño de story de Instagram (9:16)
 
 function goToStickers(){
   setProgress(2);
@@ -584,9 +600,9 @@ function goToStickers(){
   // Redibuja una vez que las tipografías propias terminaron de cargar,
   // por si el primer draw se hizo con la fuente de reemplazo.
   Promise.all([
-    document.fonts.load(`italic 500 58px ${FONT_1}`),
-    document.fonts.load(`20px ${FONT_2}`),
-    document.fonts.load(`28px ${FONT_2}`)
+    document.fonts.load(`italic 500 72px ${FONT_1}`),
+    document.fonts.load(`24px ${FONT_2}`),
+    document.fonts.load(`34px ${FONT_2}`)
   ]).then(drawComposite).catch(()=>{});
 }
 
@@ -630,18 +646,28 @@ function toggleSticker(i, chipEl){
 
 function drawComposite(){
   cctx.clearRect(0,0,CW,CH);
-  // fondo crema
+  // fondo: la misma imagen que se usa en toda la app (FONDO.png)
   cctx.fillStyle = '#F7F1E7';
   cctx.fillRect(0,0,CW,CH);
+  if(CONFIG.backgroundImageUrl){
+    if(bgImgCache.status === 'ready'){
+      drawImageCover(bgImgCache.img, 0, 0, CW, CH);
+    } else if(bgImgCache.status !== 'loading'){
+      bgImgCache.status = 'loading';
+      const img = new Image();
+      img.onload = ()=>{ bgImgCache.img = img; bgImgCache.status = 'ready'; drawComposite(); };
+      img.src = CONFIG.backgroundImageUrl;
+    }
+  }
 
   // header: iconografía nombre/fecha
   drawHeader();
 
   // fotos — siempre en cuadrado, nunca estiradas
-  const topOffset = 230;
-  const bottomMargin = 90;
+  const topOffset = 340;
+  const bottomMargin = 130;
   const areaH = CH - topOffset - bottomMargin;
-  const pad = 28;
+  const pad = 34;
 
   if(layout === 'strip'){
     // cuadrado angosto, centrado, como una tira de fotos real
@@ -667,13 +693,13 @@ function drawComposite(){
 
   // footer texto
   cctx.fillStyle = '#A1B1BA';
-  cctx.font = `28px ${FONT_2}`;
+  cctx.font = `34px ${FONT_2}`;
   cctx.textAlign = 'center';
-  cctx.fillText('· gracias por acompañarnos ·', CW/2, CH-38);
+  cctx.fillText('· gracias por acompañarnos ·', CW/2, CH-56);
 
   // stickers (dibujados al final para que estén siempre arriba)
   selectedStickers.forEach(st=>{
-    cctx.font = '90px serif';
+    cctx.font = '110px serif';
     cctx.textAlign = 'center';
     cctx.textBaseline = 'middle';
     cctx.fillText(st.emoji, st.x*CW, st.y*CH);
@@ -722,23 +748,23 @@ function drawHeader(){
     }
     if(photoImgCache['__overlay__'] !== 'loading'){
       const img = photoImgCache['__overlay__'];
-      const w = 520, h = w*(img.height/img.width);
-      cctx.drawImage(img, (CW-w)/2, 40, w, h);
+      const w = 640, h = w*(img.height/img.width);
+      cctx.drawImage(img, (CW-w)/2, 60, w, h);
       return;
     }
   }
   // Placeholder de texto (reemplazar por overlayImageUrl cuando esté listo)
   cctx.textAlign = 'center';
   cctx.fillStyle = '#1E1E1E';
-  cctx.font = `italic 500 58px ${FONT_1}`;
-  cctx.fillText(CONFIG.coupleNames, CW/2, 100);
+  cctx.font = `italic 500 72px ${FONT_1}`;
+  cctx.fillText(CONFIG.coupleNames, CW/2, 150);
   cctx.fillStyle = '#A1B1BA';
-  cctx.font = `20px ${FONT_2}`;
-  cctx.fillText(CONFIG.weddingDate.split('').join('\u200a'), CW/2, 140);
+  cctx.font = `24px ${FONT_2}`;
+  cctx.fillText(CONFIG.weddingDate.split('').join('\u200a'), CW/2, 200);
   cctx.strokeStyle = '#A1B1BA';
   cctx.lineWidth = 1.5;
   cctx.beginPath();
-  cctx.moveTo(CW/2-70, 165); cctx.lineTo(CW/2+70,165);
+  cctx.moveTo(CW/2-85, 230); cctx.lineTo(CW/2+85,230);
   cctx.stroke();
 }
 
@@ -785,11 +811,25 @@ function goToFinal(){
   document.getElementById('finalImg').src = dataUrl;
 }
 
-function downloadImage(){
-  const link = document.createElement('a');
-  link.download = 'photobooth-boda.png';
-  link.href = document.getElementById('finalImg').src;
-  link.click();
+async function downloadImage(){
+  const dataUrl = document.getElementById('finalImg').src;
+  try{
+    const res = await fetch(dataUrl);
+    const blob = await res.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.download = 'photobooth-boda.png';
+    link.href = objectUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(()=> URL.revokeObjectURL(objectUrl), 4000);
+  }catch(err){
+    // Fallback: abrir la imagen en una pestaña para guardarla manualmente
+    // (algunos navegadores de iPhone no permiten forzar la descarga;
+    // ahí el usuario mantiene presionada la imagen y elige "Agregar a Fotos").
+    window.open(dataUrl, '_blank');
+  }
 }
 
 async function shareImage(){
