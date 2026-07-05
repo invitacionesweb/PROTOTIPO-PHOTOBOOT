@@ -855,10 +855,12 @@ function drawHeader(){
       const ratio = img.height / img.width;
       let w, h, y;
       if(layout === 'grid'){
-        w = CW * 0.82;
+        w = CW * 0.82 * 1.30;   // 30% más grande
         h = w * ratio;
-        if(h > 300){ h = 300; w = h / ratio; }
-        y = (340 - h) / 2;
+        if(h > 390){ h = 390; w = h / ratio; }
+        // posicionada a 80px arriba del topOffset (340)
+        y = 340 - h - 80;
+        if(y < 10) y = 10;       // nunca sale del canvas
       } else {
         w = CW * 0.72;
         h = w * ratio;
