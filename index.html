@@ -286,13 +286,21 @@
   .cam-hint{text-align:center; font-size:15px; color:var(--azul-soft); margin-top:14px;}
   #screen-2 .sub, #screen-2 .cam-hint, #screen-2 .eyebrow{ color:var(--oscuro); }
   #screen-3 .sub{ color:var(--oscuro); }
-  #screen-album.active{
+  .top-header.final{
+    background: var(--azul);
+    margin: -20px -22px 0;
+    padding: 32px 20px 12px;
+  }
+  .top-header.final .brand span,
+  .top-header.final .step{ color: #fff; }
+  .top-header.final .brand img{ filter: brightness(10); opacity:.9; }
     justify-content:center;
     text-align:center;
   }
   #screen-album h2{ color:var(--oscuro); }
-  #screen-album .sub{ color:var(--oscuro); }
-  #screen-album .album-status{ color:var(--azul-soft); margin:12px 0; }
+  #screen-album .sub{ color:var(--oscuro); font-size:20px; line-height:1.5; }
+  #screen-album .btn-row{ margin-top:20px; }
+  #screen-album .album-status{ color:var(--oscuro); margin:12px 0; }
   #screen-4.active{
     background: var(--azul);
   }
@@ -401,18 +409,15 @@
 
   .top-header{
     display:flex; align-items:center; justify-content:space-between;
-    padding:16px 22px 0;
+    margin: 20px 20px 20px 20px;
+    padding: 0;
     position:relative;
     z-index:1;
-    background: var(--azul);
-    padding-bottom: 12px;
-    margin: -20px -22px 0;
-    padding-left: 20px;
-    padding-right: 20px;
+    background: transparent;
   }
   .top-header .brand span,
-  .top-header .step{ color: #fff !important; }
-  .top-header .brand img{ opacity: .9; filter: brightness(10); }
+  .top-header .step{ color: var(--azul-soft); }
+  .top-header .brand img{ opacity: .8; filter: none; }
   .top-header .brand{
     display:flex; align-items:center; gap:7px;
     text-decoration:none;
@@ -519,7 +524,7 @@
   <!-- PASO 4: ¿Compartir al álbum de los novios? -->
   <section class="screen" id="screen-album">
     <h2>¿La compartimos<br>con los novios?</h2>
-    <p class="sub">Tu foto se suma al álbum personal de <span id="albumCoupleNames"></span>, para que quede el recuerdo de todos los invitados.</p>
+    <p class="sub">Tu foto se suma al álbum personal de <span id="albumCoupleNames"></span><br>para que quede el recuerdo de todos los invitados.</p>
 
     <div class="album-status" id="albumStatus"></div>
 
@@ -1052,6 +1057,7 @@ async function confirmAlbumShare(){
 function goToFinal(){
   setProgress(5);
   showScreen('screen-4');
+  document.querySelector('.top-header').classList.add('final');
   const dataUrl = composeCanvas.toDataURL('image/png', 1.0);
   document.getElementById('finalImg').src = dataUrl;
   // Swap corner illustrations to white versions for the azul background
@@ -1128,6 +1134,7 @@ function restart(){
   selectedStickers = [];
   setProgress(1);
   showScreen('screen-1');
+  document.querySelector('.top-header').classList.remove('final');
   // Restore dark corner illustrations
   if(CONFIG.angelitoUrl)    document.getElementById('angelitoImg').src  = CONFIG.angelitoUrl;
   if(CONFIG.candelabroUrl)  document.getElementById('candelabroImg').src = CONFIG.candelabroUrl;
